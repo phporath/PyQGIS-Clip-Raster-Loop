@@ -14,7 +14,7 @@ else:
 
 Processing.initialize()
 
-feicao_info = camada_vetorial.getFeatures()
+feicoes = camada_vetorial.getFeatures() #alterei feicao_info -> feicoes
 for feicao in feicoes:
     nome_feicao = feicao['indice']
     output_file = "C:/Users/phpor/Desktop/teste/" + "cliped_" + str(nome_feicao) + ".tif" 
