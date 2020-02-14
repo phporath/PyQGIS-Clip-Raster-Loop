@@ -16,10 +16,10 @@ Processing.initialize()
 
 feicao_info = camada_vetorial.getFeatures()
 for feicao in feicoes:
-    nm_feicao = feicao['indice']
-    output_file = "C:/Users/phpor/Desktop/teste/" + "cliped_" + str(feicao['indice']) + ".tif"
+    nome_feicao = feicao['indice']
+    output_file = "C:/Users/phpor/Desktop/teste/" + "cliped_" + str(nome_feicao) + ".tif" 
     #teste = camada_vetorial.setSubsetString("indice=" + str(feicao['indice']))
-    camada_vetorial.setSubsetString(f""" "indice" = '{feicao['indice']}' """)
+    camada_vetorial.setSubsetString(f""" "indice" = '{nome_feicao}' """)
 
     parameters = {'INPUT': camada_raster,
             'MASK': camada_vetorial,
@@ -31,7 +31,7 @@ for feicao in feicoes:
             'DATA_TYPE': 0,
             'OUTPUT': output_file}
             
-    print(nm_feicao)
+    print(nome_feicao)
     
     clip = processing.run('gdal:cliprasterbymasklayer', parameters)
     
