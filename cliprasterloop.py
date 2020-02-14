@@ -4,24 +4,25 @@ import processing
 from processing.core.Processing import Processing
 import gdal
 
-VECTOR = QgsVectorLayer('C:/Users/phpor/Desktop/teste/quad2.shp','quad2.shp','ogr')
+camada_vetorial = QgsVectorLayer('C:/Users/phpor/Desktop/teste/quad2.shp','quad2.shp','ogr')
+camada_raster = QgsRasterLayer('C:/Users/phpor/Desktop/aerofoto.tif','aerofoto.tif')
 
-RASTER = QgsRasterLayer('C:/Users/phpor/Desktop/aerofoto.tif','aerofoto.tif')
-if RASTER.isValid():
+if camada_raster.isValid():
     print("ok")
 else:
     print("not ok")
 
 Processing.initialize()
 
-row_info = VECTOR.getFeatures()
-for row in row_info:
-    row_name = row['indice']
-    output_file = "C:/Users/phpor/Desktop/teste/" + "cliped_" + str(row['indice']) + ".tif"
-    teste = VECTOR.setSubsetString("indice=" + str(row['indice']))
-        
-    parameters = {'INPUT': RASTER,
-            'MASK': VECTOR,
+feicao_info = camada_vetorial.getFeatures()
+for feicao in feicoes:
+    nm_feicao = feicao['indice']
+    output_file = "C:/Users/phpor/Desktop/teste/" + "cliped_" + str(feicao['indice']) + ".tif"
+    #teste = camada_vetorial.setSubsetString("indice=" + str(feicao['indice']))
+    camada_vetorial.setSubsetString(f""" "indice" = '{feicao['indice']}' """)
+
+    parameters = {'INPUT': camada_raster,
+            'MASK': camada_vetorial,
             'NODATA': 250.0,
             'ALPHA_BAND': False,
             'CROP_TO_CUTLINE': True,
@@ -30,11 +31,11 @@ for row in row_info:
             'DATA_TYPE': 0,
             'OUTPUT': output_file}
             
-    print(row_name)
+    print(nm_feicao)
     
     clip = processing.run('gdal:cliprasterbymasklayer', parameters)
     
-    VECTOR.setSubsetString('')
+    camada_vetorial.setSubsetString('')
 
 print("done")
     
